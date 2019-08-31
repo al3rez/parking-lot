@@ -1,1 +1,1 @@
-# parking-lot [![Build Status](https://travis-ci.com/azbshiri/parking-lot.svg?token=1dbZM2CNEGcT8cVBF1Eg&branch=master)](https://travis-ci.com/azbshiri/parking-lot) [![codecov](https://codecov.io/gh/azbshiri/parking-lot/branch/master/graph/badge.svg?token=Vm1vbtp4dW)](https://codecov.io/gh/azbshiri/parking-lot)
+# parking-lot [![Build Status](https://travis-ci.com/azbshiri/parking-lot.svg?token=1dbZM2CNEGcT8cVBF1Eg&branch=master)](https://travis-ci.com/azbshiri/parking-lot)
