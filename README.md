@@ -1,4 +1,4 @@
-# parking-lot [![Build Status](https://travis-ci.com/azbshiri/parking-lot.svg?token=1dbZM2CNEGcT8cVBF1Eg&branch=master)](https://travis-ci.com/azbshiri/parking-lot)
+# parking-lot [![Build Status](https://travis-ci.com/azbshiri/parking-lot.svg?token=1dbZM2CNEGcT8cVBF1Eg&branch=master)](https://travis-ci.com/azbshiri/parking-lot) [![codebeat badge](https://codebeat.co/badges/7ef052e3-35ff-4cab-88f9-e13393c8ab35)](https://codebeat.co/a/alireza-bashiri/projects/github-com-azbshiri-parking-lot)
 This is a solution for Gojek parking lot test
 
 ![](https://www.ardanlabs.com/images/gopher-kart/gopher-blue-updated.gif)
