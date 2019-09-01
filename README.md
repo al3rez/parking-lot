@@ -1,11 +1,14 @@
 # parking-lot [![Build Status](https://travis-ci.com/azbshiri/parking-lot.svg?token=1dbZM2CNEGcT8cVBF1Eg&branch=master)](https://travis-ci.com/azbshiri/parking-lot)
 This is a solution for Gojek parking lot test
 
+![](https://www.ardanlabs.com/images/gopher-kart/gopher-blue-updated.gif)
+
 
 # Installation
-To build this locally you should either have `go` or `docker` installed:
-https://docs.docker.com/install/
-https://golang.org/doc/install
+To build this locally you should either have [Go](https://docs.docker.com/install/) or [Docker](https://golang.org/doc/install) installed.
+
+
+
 
 ```shell script
 $ cd parking-lot
