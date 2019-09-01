@@ -30,10 +30,19 @@ Usage of parking-lot:
 
 
 
-### Read from a file
+# CLI Usage
 ```shell script
-$ go build
-$ ./parking-lot -f file_inputs.txt
+Usage of parking-lot:
+  -f string
+        Execute parking lot instructions from given file
+  -i    Execute parking lot instructions from interactive shell
+  -stdin
+        Execute parking lot instructions from standard streams
+````
+
+### Read instructions from a file (locally)
+```shell script
+$ parking-lot -f file_inputs.txt
 Created a parking lot with 6 slots
 Allocated slot number: 1
 Allocated slot number: 2
@@ -54,8 +63,57 @@ KA-01-HH-1234, KA-01-HH-9999, KA-01-P-333
 1, 2, 4
 6
 Not found
-
 ```
+
+### Read instructions from a file (it's actually standard stream) (Docker)
+```shell script
+$ cat file_inputs.txt | docker run -i parking-lot -i -stdin
+created a parking lot with 6 slots
+allocated slot number: 1
+allocated slot number: 2
+allocated slot number: 3
+allocated slot number: 5
+allocated slot number: 5
+allocated slot number: 6
+slot number 4 is free
+slot no.        registeration no        colour
+1               ka-01-hh-1234           white
+2               ka-01-hh-9999           white
+3               ka-01-bb-0001           black
+5               ka-01-hh-2701           blue
+6               ka-01-hh-3141           black
+allocated slot number: 4
+sorry, parking lot is full
+ka-01-hh-1234, ka-01-hh-9999, ka-01-p-333
+1, 2, 4
+6
+not found
+```
+
+```shell script
+$ cat file_inputs.txt | parking-lot -i -stdin
+created a parking lot with 6 slots
+allocated slot number: 1
+allocated slot number: 2
+allocated slot number: 3
+allocated slot number: 5
+allocated slot number: 5
+allocated slot number: 6
+slot number 4 is free
+slot no.        registeration no        colour
+1               ka-01-hh-1234           white
+2               ka-01-hh-9999           white
+3               ka-01-bb-0001           black
+5               ka-01-hh-2701           blue
+6               ka-01-hh-3141           black
+allocated slot number: 4
+sorry, parking lot is full
+ka-01-hh-1234, ka-01-hh-9999, ka-01-p-333
+1, 2, 4
+6
+not found
+```
+
 ## Read from interactive shell
 ```shell script
 $ go build
@@ -97,12 +155,9 @@ parking-lot> slot_number_for_registeration_number MA-01-HH-1234
 Not found
 ```
 
+## Running tests
 
-# CLI usage
 ```shell script
-Usage of parking-lot:
-  -f string
-        Execute parking lot instructions from given file
-  -i    Execute parking lot instructions from interactive shell
+$ cd parking-lot
+$ go test -v ./...
 ````
-
