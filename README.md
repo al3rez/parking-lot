@@ -109,3 +109,6 @@ Allocated slot number: 2
 $ cd parking-lot
 $ go test -v ./...
 ````
+
+# TODO
+- [ ] Abstract out error handling in cli.Context
