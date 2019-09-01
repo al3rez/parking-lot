@@ -2,20 +2,23 @@ package cli
 
 import (
 	"fmt"
-	"log"
+	"io"
+	"os"
 	"strconv"
 	"strings"
 
 	"github.com/azbshiri/parking-lot/parking"
 )
 
+// Context represents a command-line interface which will operate on a garage using given commands
 type Context struct {
 	Garage parking.Garage
 	Cmd    []string
+	Out io.Writer
 }
 
-func New(garage parking.Garage, cmd []string) *Context {
-	return &Context{garage, cmd}
+func New(garage parking.Garage, cmd []string, out io.Writer) *Context {
+	return &Context{garage, cmd, out}
 }
 
 func (ctx *Context) Exec() parking.Garage {
@@ -34,6 +37,11 @@ func (ctx *Context) Exec() parking.Garage {
 		ctx.findCarsWithColor()
 	case "status":
 		ctx.status()
+	case "exit":
+		os.Exit(1)
+	default:
+		fmt.Fprintf(ctx.Out, "%s: command not found\n", name)
+		os.Exit(1)
 	}
 
 	return ctx.Garage
@@ -46,32 +54,33 @@ func (ctx *Context) findCarsWithColor() {
 	for _, car := range cars {
 		plateNumbers = append(plateNumbers, car.PlateNumber)
 	}
-	fmt.Printf("%s\n", strings.Join(plateNumbers, ", "))
+	fmt.Fprintf(ctx.Out, "%s\n", strings.Join(plateNumbers, ", "))
 }
 
 func (ctx *Context) indexOfCarWithPlateNumber() {
 	color := ctx.Cmd[1]
 	lotNumber := ctx.Garage.IndexOfCarWithPlateNumber(color)
 	if lotNumber == -1 {
-		fmt.Println("Not found")
+		fmt.Fprintln(ctx.Out, "Not found")
 		return
 	}
-	fmt.Println(lotNumber)
+	fmt.Fprintln(ctx.Out, lotNumber)
 }
 
 func (ctx *Context) indexOfCarsWithColor() {
 	color := ctx.Cmd[1]
 	lotNumbers := ctx.Garage.IndexOfCarsWithColor(color)
-	fmt.Println(strings.Trim(strings.Join(strings.Fields(fmt.Sprint(lotNumbers)), ", "), "[]"))
+	fmt.Fprintln(ctx.Out, strings.Trim(strings.Join(strings.Fields(fmt.Sprint(lotNumbers)), ", "), "[]"))
 }
 
 func (ctx *Context) leave() {
 	lotNumber, err := strconv.Atoi(ctx.Cmd[1])
 	if err != nil {
-		log.Fatalf("Cannot convert string to int: %q\n", err)
+		fmt.Fprintf(ctx.Out, "Cannot convert string to int: %q\n", err)
+		os.Exit(1)
 	}
 	ctx.Garage.Lots = ctx.Garage.Leave(lotNumber)
-	fmt.Printf("Slot number %d is free\n", lotNumber)
+	fmt.Fprintf(ctx.Out, "Slot number %d is free\n", lotNumber)
 }
 
 func (ctx *Context) park() {
@@ -83,21 +92,19 @@ func (ctx *Context) park() {
 		fmt.Printf("Sorry, parking lot is full\n")
 		return
 	}
-	fmt.Printf("Allocated slot number: %d\n", lotNumber)
+	fmt.Fprintf(ctx.Out, "Allocated slot number: %d\n", lotNumber)
 }
 
 func (ctx *Context) createParkingLot() {
 	capacity, err := strconv.Atoi(ctx.Cmd[1])
 	if err != nil {
-		log.Fatalf("Cannot convert string to int: %q\n", err)
+		fmt.Fprint(ctx.Out, "Cannot convert string to int: %q\n", err)
 	}
-	ctx.Garage.Capacity = capacity
 	ctx.Garage.Lots = make(parking.Lots, capacity)
 	for i, _ := range ctx.Garage.Lots {
 		ctx.Garage.Lots[i] = &parking.Lot{}
 	}
-	fmt.Println(ctx.Garage.Lots)
-	fmt.Printf("Created a parking lot with %d slots\n", capacity)
+	fmt.Fprintf(ctx.Out, "Created a parking lot with %d slots\n", capacity)
 }
 
 func (ctx *Context) status() {
@@ -106,6 +113,6 @@ func (ctx *Context) status() {
 		if lot.Car == nil {
 			continue
 		}
-		fmt.Printf("%d\t\t%s\t\t%s\n", i+1, lot.Car.PlateNumber, lot.Car.Color)
+		fmt.Fprintf(ctx.Out, "%d\t\t%s\t\t%s\n", i+1, lot.Car.PlateNumber, lot.Car.Color)
 	}
 }
