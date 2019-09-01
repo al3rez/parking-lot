@@ -2,7 +2,35 @@
 This is a solution for Gojek parking lot test
 
 
-## Read from a file
+# Installation
+To build this locally you should either have `go` or `docker` installed
+
+```shell script
+$ cd parking-lot
+$ go install
+$ parking-lot -h
+Usage of parking-lot:
+  -f string
+        Execute parking lot instructions from given file
+  -i    Execute parking lot instructions from interactive shell
+
+```
+
+### Running `parking-lot` binary inside a Docker container:
+
+```shell script
+$ cd parking-lot
+$ docker build -t parking-lot
+$ docker run -ti parking-lot -h
+Usage of parking-lot:
+  -f string
+        Execute parking lot instructions from given file
+  -i    Execute parking lot instructions from interactive shell
+```
+
+
+
+### Read from a file
 ```shell script
 $ go build
 $ ./parking-lot -f file_inputs.txt
@@ -10,7 +38,7 @@ Created a parking lot with 6 slots
 Allocated slot number: 1
 Allocated slot number: 2
 Allocated slot number: 3
-Allocated slot number: 4
+Allocated slot number: 5
 Allocated slot number: 5
 Allocated slot number: 6
 Slot number 4 is free
@@ -68,4 +96,13 @@ parking-lot> slot_number_for_registeration_number KA-01-HH-1234
 parking-lot> slot_number_for_registeration_number MA-01-HH-1234
 Not found
 ```
+
+
+# CLI usage
+```shell script
+Usage of parking-lot:
+  -f string
+        Execute parking lot instructions from given file
+  -i    Execute parking lot instructions from interactive shell
+````
 
