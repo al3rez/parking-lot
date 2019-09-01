@@ -68,3 +68,4 @@ parking-lot> slot_number_for_registeration_number KA-01-HH-1234
 parking-lot> slot_number_for_registeration_number MA-01-HH-1234
 Not found
 ```
+
