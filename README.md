@@ -100,7 +100,7 @@ Allocated slot number: 2
 ...
 ```
 
-## Running tests
+# Running tests
 
 ```shell script
 $ cd parking-lot
