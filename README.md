@@ -5,9 +5,10 @@ This is a solution for Gojek parking lot test
 
 
 # Installation
-To build this locally you should either have `go` or `docker` installed:
-https://docs.docker.com/install/
-https://golang.org/doc/install
+To build this locally you should either have [Go](https://docs.docker.com/install/) or [Docker](https://golang.org/doc/install) installed.
+
+
+
 
 ```shell script
 $ cd parking-lot
