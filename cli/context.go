@@ -130,7 +130,7 @@ func (ctx *Context) createParkingLot() {
 }
 
 func (ctx *Context) status() {
-	if _, err := fmt.Fprintln(ctx.Out, "Slot No.\tRegistration No\tColour"); err != nil {
+	if _, err := fmt.Fprintln(ctx.Out, "Slot No.    Registration No    Colour"); err != nil {
 		log.Fatal(err)
 	}
 
@@ -138,7 +138,7 @@ func (ctx *Context) status() {
 		if lot.Car == nil {
 			continue
 		}
-		if _, err := fmt.Fprintf(ctx.Out, "%d\t\t%s\t\t%s\n", i+1, lot.Car.PlateNumber, lot.Car.Color); err != nil {
+		if _, err := fmt.Fprintf(ctx.Out, "%-12d%-19v%s\n", i+1, lot.Car.PlateNumber, lot.Car.Color); err != nil {
 			log.Fatal(err)
 		}
 	}

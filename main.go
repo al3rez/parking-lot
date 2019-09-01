@@ -16,15 +16,17 @@ import (
 
 func main() {
 	var filename string
-	flag.StringVar(&filename, "f", "",
-		"Execute parking lot instructions from given file")
+	if len(os.Args) > 1 {
+		flag.StringVar(&filename, "f", os.Args[1],
+			"Execute parking lot instructions from given file")
+	}
 
 	var stdin bool
 	flag.BoolVar(&stdin, "stdin", false,
 		"Execute parking lot instructions from standard streams")
 
 	var interactive bool
-	flag.BoolVar(&interactive, "i", false,
+	flag.BoolVar(&interactive, "i", len(os.Args) == 1,
 		"Execute parking lot instructions from interactive shell")
 
 	flag.Parse()
