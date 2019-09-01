@@ -45,7 +45,7 @@ func main() {
 		}
 		var garage parking.Garage
 		for _, cmd := range cmds {
-			ctx := cli.New(garage, cmd, os.Stdout)
+			ctx := cli.New(garage, cmd, os.Stdout, os.Stderr)
 			garage = ctx.Exec()
 		}
 	}
@@ -66,7 +66,7 @@ func main() {
 			raw = strings.TrimSuffix(raw, "\n")
 			cmd := strings.Split(raw, " ")
 
-			ctx := cli.New(garage, cmd, os.Stdout)
+			ctx := cli.New(garage, cmd, os.Stdout, os.Stderr)
 			garage = ctx.Exec()
 		}
 	}

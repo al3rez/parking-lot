@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -10,17 +11,21 @@ import (
 	"github.com/azbshiri/parking-lot/parking"
 )
 
-// Context represents a command-line interface which will operate on a garage using given commands
+// Context is a type that is passed through to
+// each parking action in a cli application.
 type Context struct {
 	Garage parking.Garage
 	Cmd    []string
-	Out io.Writer
+	Out    io.Writer
+	OutErr io.Writer
 }
 
-func New(garage parking.Garage, cmd []string, out io.Writer) *Context {
-	return &Context{garage, cmd, out}
+func New(garage parking.Garage, cmd []string, out io.Writer, outerr io.Writer) *Context {
+	return &Context{garage, cmd, out, outerr}
 }
 
+// Exec runs commands against parking lots
+// e.g. parking, leaving, searching
 func (ctx *Context) Exec() parking.Garage {
 	switch name := ctx.Cmd[0]; name {
 	case "create_parking_lot":
@@ -40,8 +45,7 @@ func (ctx *Context) Exec() parking.Garage {
 	case "exit":
 		os.Exit(1)
 	default:
-		fmt.Fprintf(ctx.Out, "%s: command not found\n", name)
-		os.Exit(1)
+		fmt.Fprintf(ctx.OutErr, "%s: command not found\n", name)
 	}
 
 	return ctx.Garage
@@ -54,33 +58,44 @@ func (ctx *Context) findCarsWithColor() {
 	for _, car := range cars {
 		plateNumbers = append(plateNumbers, car.PlateNumber)
 	}
-	fmt.Fprintf(ctx.Out, "%s\n", strings.Join(plateNumbers, ", "))
+	if _, err := fmt.Fprintf(ctx.Out, "%s\n", strings.Join(plateNumbers, ", ")); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (ctx *Context) indexOfCarWithPlateNumber() {
 	color := ctx.Cmd[1]
 	lotNumber := ctx.Garage.IndexOfCarWithPlateNumber(color)
 	if lotNumber == -1 {
-		fmt.Fprintln(ctx.Out, "Not found")
+		if _, err := fmt.Fprintln(ctx.Out, "Not found"); err != nil {
+			log.Fatal(err)
+		}
 		return
 	}
-	fmt.Fprintln(ctx.Out, lotNumber)
+	if _, err := fmt.Fprintln(ctx.Out, lotNumber); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (ctx *Context) indexOfCarsWithColor() {
 	color := ctx.Cmd[1]
 	lotNumbers := ctx.Garage.IndexOfCarsWithColor(color)
-	fmt.Fprintln(ctx.Out, strings.Trim(strings.Join(strings.Fields(fmt.Sprint(lotNumbers)), ", "), "[]"))
+	if _, err := fmt.Fprintln(ctx.Out, strings.Trim(strings.Join(strings.Fields(fmt.Sprint(lotNumbers)), ", "), "[]")); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (ctx *Context) leave() {
 	lotNumber, err := strconv.Atoi(ctx.Cmd[1])
 	if err != nil {
-		fmt.Fprintf(ctx.Out, "Cannot convert string to int: %q\n", err)
-		os.Exit(1)
+		if _, err := fmt.Fprintf(ctx.Out, "Cannot convert string to int: %q\n", err); err != nil {
+			log.Fatal(err)
+		}
 	}
 	ctx.Garage.Lots = ctx.Garage.Leave(lotNumber)
-	fmt.Fprintf(ctx.Out, "Slot number %d is free\n", lotNumber)
+	if _, err := fmt.Fprintf(ctx.Out, "Slot number %d is free\n", lotNumber); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (ctx *Context) park() {
@@ -89,30 +104,42 @@ func (ctx *Context) park() {
 	car := parking.Car{PlateNumber: plateNumber, Color: color}
 	ctx.Garage.Lots, lotNumber = ctx.Garage.Park(car)
 	if lotNumber == -1 {
-		fmt.Printf("Sorry, parking lot is full\n")
+		if _, err := fmt.Fprintf(ctx.Out, "Sorry, parking lot is full\n"); err != nil {
+			log.Fatal(err)
+		}
 		return
 	}
-	fmt.Fprintf(ctx.Out, "Allocated slot number: %d\n", lotNumber)
+
+	if _, err := fmt.Fprintf(ctx.Out, "Allocated slot number: %d\n", lotNumber); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (ctx *Context) createParkingLot() {
 	capacity, err := strconv.Atoi(ctx.Cmd[1])
 	if err != nil {
-		fmt.Fprint(ctx.Out, "Cannot convert string to int: %q\n", err)
+		if _, err := fmt.Fprintf(ctx.Out, "Invalid command value: %q\n", ctx.Cmd[1]); err != nil {
+			log.Fatal(err)
+		}
+		return
 	}
-	ctx.Garage.Lots = make(parking.Lots, capacity)
-	for i, _ := range ctx.Garage.Lots {
-		ctx.Garage.Lots[i] = &parking.Lot{}
+	ctx.Garage = parking.NewGarage(capacity)
+	if _, err := fmt.Fprintf(ctx.Out, "Created a parking lot with %d slots\n", capacity); err != nil {
+		log.Fatal(err)
 	}
-	fmt.Fprintf(ctx.Out, "Created a parking lot with %d slots\n", capacity)
 }
 
 func (ctx *Context) status() {
-	fmt.Printf("Slot No.\tRegisteration No\tColour\n")
+	if _, err := fmt.Fprintln(ctx.Out, "Slot No.\tRegistration No\tColour"); err != nil {
+		log.Fatal(err)
+	}
+
 	for i, lot := range ctx.Garage.Lots {
 		if lot.Car == nil {
 			continue
 		}
-		fmt.Fprintf(ctx.Out, "%d\t\t%s\t\t%s\n", i+1, lot.Car.PlateNumber, lot.Car.Color)
+		if _, err := fmt.Fprintf(ctx.Out, "%d\t\t%s\t\t%s\n", i+1, lot.Car.PlateNumber, lot.Car.Color); err != nil {
+			log.Fatal(err)
+		}
 	}
 }

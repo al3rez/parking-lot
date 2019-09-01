@@ -1,5 +1,15 @@
 package parking
 
+// NewGarage instantiates a new garage with n capacity of empty parking lots
+func NewGarage(cap int) Garage {
+	g := Garage{}
+	g.Lots = make(Lots, cap)
+	for i, _ := range g.Lots {
+		g.Lots[i] = &Lot{}
+	}
+	return g
+}
+
 // Park put a car into an empty parking lot
 func (g Garage) Park(car Car) (Lots, int) {
 	lotNumber := -1
