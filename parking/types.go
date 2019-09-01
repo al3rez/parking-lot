@@ -16,5 +16,5 @@ type Lots []*Lot
 
 // Garage represents a building which holds parking lots
 type Garage struct {
-	Lots     Lots
+	Lots Lots
 }

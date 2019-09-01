@@ -24,10 +24,10 @@ func TestGarage_Park(t *testing.T) {
 		car Car
 	}
 	tests := []struct {
-		name   string
-		args   args
-		want   Lots
-		want1  int
+		name  string
+		args  args
+		want  Lots
+		want1 int
 	}{
 		{"park a car in slot 1", args{Car{}}, g.Lots, 1},
 		{"park a car in slot 2 ", args{Car{}}, g.Lots, 2},
@@ -59,9 +59,9 @@ func TestGarage_Leave(t *testing.T) {
 		lotNumber int
 	}
 	tests := []struct {
-		name   string
-		args   args
-		want   int
+		name string
+		args args
+		want int
 	}{
 		{"remove car from slot 1", args{1}, 1},
 		{"remove car from slot 2", args{2}, 2},
@@ -88,9 +88,9 @@ func TestGarage_FindCarsWithColor(t *testing.T) {
 		color string
 	}
 	tests := []struct {
-		name   string
-		args   args
-		want   int
+		name string
+		args args
+		want int
 	}{
 		{"find 2 cars with color white", args{"White"}, 2},
 		{"find 1 car with color black", args{"Black"}, 1},
@@ -117,9 +117,9 @@ func TestGarage_IndexOfCarsWithColor(t *testing.T) {
 		color string
 	}
 	tests := []struct {
-		name   string
-		args   args
-		want   int
+		name string
+		args args
+		want int
 	}{
 		{"index 2 cars with color white", args{"White"}, 2},
 		{"index 1 cars with color black", args{"Black"}, 1},
@@ -149,9 +149,9 @@ func TestGarage_IndexOfCarWithPlateNumber(t *testing.T) {
 		plateNumber string
 	}
 	tests := []struct {
-		name   string
-		args   args
-		want   int
+		name string
+		args args
+		want int
 	}{
 		{"index car with plate number 1", args{"1"}, 1},
 		{"index car with plate number 2", args{"2"}, 2},

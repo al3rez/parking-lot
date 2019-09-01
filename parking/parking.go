@@ -18,7 +18,7 @@ func (g Garage) Park(car Car) (Lots, int) {
 	for i, lot := range g.Lots {
 		if lot.Car == nil {
 			g.Lots[i].Car = &car
-			lotNumber = i+1
+			lotNumber = i + 1
 			break
 		}
 	}
@@ -60,7 +60,7 @@ func (g Garage) IndexOfCarsWithColor(color string) []int {
 func (g Garage) IndexOfCarWithPlateNumber(plateNumber string) int {
 	for i, lot := range g.Lots {
 		if lot.Car != nil && lot.Car.PlateNumber == plateNumber {
-			return i+1
+			return i + 1
 		}
 	}
 
