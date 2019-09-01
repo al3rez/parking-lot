@@ -3,7 +3,9 @@ This is a solution for Gojek parking lot test
 
 
 # Installation
-To build this locally you should either have `go` or `docker` installed
+To build this locally you should either have `go` or `docker` installed:
+https://docs.docker.com/install/
+https://golang.org/doc/install
 
 ```shell script
 $ cd parking-lot
@@ -16,7 +18,7 @@ Usage of parking-lot:
 
 ```
 
-### Running `parking-lot` binary inside a Docker container:
+### Building `parking-lot` binary inside a Docker container:
 
 ```shell script
 $ cd parking-lot
