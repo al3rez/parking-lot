@@ -221,9 +221,9 @@ func TestContext_Exec_SlotNumbersForCarsWithColour(t *testing.T) {
 
 func TestContext_Exec_Status(t *testing.T) {
 	status :=
-		"Slot No.\tRegistration No\tColour\n" +
-			"1\t\tKMH\t\twhite\n" +
-			"2\t\tKAH\t\tblack\n"
+"Slot No.    Registration No    Colour\n"+
+"1           KMH                white\n"+
+"2           KAH                black\n"
 
 	g := parking.NewGarage(3)
 	buf := &bytes.Buffer{}
